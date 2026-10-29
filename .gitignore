@@ -1,0 +1,12 @@
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE & Editor files
+.vscode/
+.idea/
+
+# Node & Logs
+node_modules/
+*.log

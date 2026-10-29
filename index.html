@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlyPig — Personal Finance for First-Timers</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- App Main Wrapper -->
+  <div class="app-container">
+    
+    <!-- Top Header -->
+    <header class="app-header">
+      <a href="#" class="brand" id="brand-home" aria-label="FlyPig Home">
+        <div class="brand-icon">
+          <!-- Pig with wings SVG icon -->
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 11V9a4 4 0 0 0-8 0v2"></path>
+            <path d="M5 12a7 7 0 1 0 14 0 7 7 0 1 0-14 0Z"></path>
+            <path d="M16 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"></path>
+            <path d="M7 16l-3 4"></path>
+            <path d="M17 16l3 4"></path>
+            <path d="M14 6l4-2"></path>
+          </svg>
+        </div>
+        <div>
+          <span class="brand-name">FlyPig <span class="brand-badge">MVP</span></span>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <select id="month-selector" class="month-selector-select" aria-label="Select Active Month">
+          <!-- Populated by JavaScript -->
+        </select>
+        <button id="btn-new-month-header" class="btn btn-secondary btn-sm" title="Start a new month">
+          + Month
+        </button>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="app-nav" role="tablist" aria-label="Main Navigation">
+      <button class="nav-tab active" data-view="dashboard" role="tab" aria-selected="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="9" rx="1"></rect>
+          <rect x="14" y="3" width="7" height="5" rx="1"></rect>
+          <rect x="14" y="12" width="7" height="9" rx="1"></rect>
+          <rect x="3" y="16" width="7" height="5" rx="1"></rect>
+        </svg>
+        <span>Dashboard</span>
+      </button>
+
+      <button class="nav-tab" data-view="expenses" role="tab" aria-selected="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="8" y1="6" x2="21" y2="6"></line>
+          <line x1="8" y1="12" x2="21" y2="12"></line>
+          <line x1="8" y1="18" x2="21" y2="18"></line>
+          <line x1="3" y1="6" x2="3.01" y2="6"></line>
+          <line x1="3" y1="12" x2="3.01" y2="12"></line>
+          <line x1="3" y1="18" x2="3.01" y2="18"></line>
+        </svg>
+        <span>Expenses</span>
+      </button>
+
+      <button class="nav-tab" data-view="simulator" role="tab" aria-selected="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+        <span>Simulator</span>
+      </button>
+
+      <button class="nav-tab" data-view="stats" role="tab" aria-selected="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 20V10"></path>
+          <path d="M12 20V4"></path>
+          <path d="M6 20v-6"></path>
+        </svg>
+        <span>Insights</span>
+      </button>
+
+      <button class="nav-tab" data-view="settings" role="tab" aria-selected="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+        <span>Plan & Setup</span>
+      </button>
+    </nav>
+
+    <!-- ======================================================================
+         VIEW 1: DASHBOARD
+         ====================================================================== -->
+    <main id="view-dashboard" class="view-section active">
+      
+      <!-- Hero Available Card -->
+      <section class="card hero-card" aria-labelledby="hero-title">
+        <div class="hero-header">
+          <div>
+            <div id="hero-title" class="hero-subtitle">AVAILABLE TO SPEND NOW</div>
+            <div id="hero-available-amount" class="hero-amount">€0.00</div>
+          </div>
+          <div id="hero-current-date" class="brand-badge" style="font-size: 0.78rem; padding: 4px 10px; background: rgba(255,255,255,0.12); color: #f8fafc; border-color: rgba(255,255,255,0.2);">
+            🗓️ Oct 5, 2026
+          </div>
+        </div>
+
+        <div class="hero-grid">
+          <div>
+            <div class="hero-metric-label">RECOMMENDED DAILY PACE</div>
+            <div id="hero-daily-pace" class="hero-metric-value">€0.00 / day</div>
+            <div id="hero-remaining-days" class="hero-metric-sub">Today: Oct 5 • 27 days left</div>
+          </div>
+          <div>
+            <div class="hero-metric-label">PROTECTED SAVINGS</div>
+            <div id="hero-planned-savings" class="hero-metric-value">€0.00</div>
+            <div id="hero-savings-status" class="hero-metric-sub">Goal for this month</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Dynamic Status Guidance Banner -->
+      <section id="status-banner" class="status-banner good">
+        <div class="status-badge" id="status-badge">🟢</div>
+        <div>
+          <div class="status-title" id="status-title">On Track</div>
+          <div id="status-message">Loading financial status...</div>
+        </div>
+      </section>
+
+      <!-- Monthly Breakdown Visual Progress -->
+      <section class="card" aria-label="Monthly Budget Distribution">
+        <div class="section-header">
+          <h2 class="section-title">Budget Distribution</h2>
+          <span id="label-income-total" class="form-help">Income: €0.00</span>
+        </div>
+
+        <div class="progress-bar-container">
+          <div class="progress-track" aria-hidden="true">
+            <div id="seg-committed" class="progress-segment committed" style="width: 0%" title="Committed"></div>
+            <div id="seg-savings" class="progress-segment savings" style="width: 0%" title="Planned Savings"></div>
+            <div id="seg-spent" class="progress-segment spent" style="width: 0%" title="Spent"></div>
+            <div id="seg-available" class="progress-segment available" style="width: 0%" title="Available"></div>
+          </div>
+          <div class="progress-legend">
+            <div class="legend-item"><span class="legend-dot committed"></span> Committed Bills</div>
+            <div class="legend-item"><span class="legend-dot savings"></span> Planned Savings</div>
+            <div class="legend-item"><span class="legend-dot spent"></span> Variable Spent</div>
+            <div class="legend-item"><span class="legend-dot available"></span> Available Margin</div>
+          </div>
+        </div>
+
+        <!-- 4 Key Numbers -->
+        <div class="numbers-grid">
+          <div class="metric-box">
+            <span class="metric-box-label">Committed Bills</span>
+            <span id="val-committed" class="metric-box-val">€0.00</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-box-label">Gasto Libre Mes</span>
+            <span id="val-variable-budget" class="metric-box-val">€0.00</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-box-label">Gasto Total Real</span>
+            <span id="val-spent" class="metric-box-val">€0.00</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-box-label">Planned Savings</span>
+            <span id="val-savings" class="metric-box-val">€0.00</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Planned Essentials & Grocery Envelopes Tracker -->
+      <section id="section-envelopes" class="card" aria-label="Grocery and Essentials Budgets">
+        <div class="section-header">
+          <h2 class="section-title">🛒 Sobres de Mercado y Esenciales</h2>
+          <span class="brand-badge" style="background: #e0f2fe; color: #0284c7; border-color: #bae6fd;">Presupuesto Separado</span>
+        </div>
+        <p class="form-help">
+          El dinero para mercado está apartado. Cuando compres en el supermercado, se descuenta de este sobre (sin reducir dos veces tu dinero libre para salidas).
+        </p>
+        <div id="envelopes-container" style="display: flex; flex-direction: column; gap: 12px; margin-top: 4px;">
+          <!-- Populated dynamically by UI.renderDashboard -->
+        </div>
+      </section>
+
+      <!-- Recent Expenses Section -->
+      <section class="card">
+        <div class="section-header">
+          <h2 class="section-title">Recent Expenses</h2>
+          <button class="btn btn-subtle btn-sm" id="btn-see-all-expenses">View all &rarr;</button>
+        </div>
+        <div id="dashboard-recent-expenses" class="expense-list">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- What-If Teaser Card -->
+      <section class="card" style="background: linear-gradient(to right, #eff6ff, #fdf2f8); border-color: #cbd5e1;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h3 style="font-size: 0.95rem; font-weight: 700;">Considering a big purchase?</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">See what happens to your savings and daily pace before you spend.</p>
+          </div>
+          <button class="btn btn-secondary btn-sm" id="btn-open-sim-teaser">Simulate</button>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ======================================================================
+         VIEW 2: EXPENSES HISTORY
+         ====================================================================== -->
+    <main id="view-expenses" class="view-section">
+      <section class="card">
+        <div class="section-header">
+          <h2 class="section-title">Expenses Log</h2>
+          <span id="expenses-count" class="form-help">0 expenses</span>
+        </div>
+
+        <!-- Filter & Search Toolbar -->
+        <div class="toolbar">
+          <input type="text" id="expense-search-input" class="form-input toolbar-input" placeholder="Search store or description...">
+          <select id="expense-filter-type" class="form-select" style="max-width: 140px;">
+            <option value="all">All Types</option>
+            <option value="normal">Normal</option>
+            <option value="extraordinary">Extraordinary</option>
+            <option value="emergency">Emergency</option>
+          </select>
+          <select id="expense-filter-category" class="form-select" style="max-width: 150px;">
+            <option value="all">All Categories</option>
+            <!-- Populated dynamically -->
+          </select>
+        </div>
+
+        <div id="all-expenses-list" class="expense-list">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+    </main>
+
+    <!-- ======================================================================
+         VIEW 3: "WHAT-IF" LARGE PURCHASE SIMULATOR
+         ====================================================================== -->
+    <main id="view-simulator" class="view-section">
+      <section class="card">
+        <div>
+          <h2 class="section-title">“What-If” Purchase Simulator</h2>
+          <p class="form-help" style="margin-top: 4px;">
+            Test a hypothetical purchase (a weekend trip, a new gadget, a festival ticket).
+            <strong>This will never alter your actual expenses or balance.</strong>
+          </p>
+        </div>
+
+        <form id="simulator-form" onsubmit="return false;">
+          <div class="form-group">
+            <label class="form-label" for="sim-concept">What are you thinking of buying?</label>
+            <input type="text" id="sim-concept" class="form-input" placeholder="e.g. Trip to Paris, Wireless headphones" required>
+          </div>
+
+          <div class="form-group" style="margin-top: 10px;">
+            <label class="form-label" for="sim-amount">Hypothetical Amount</label>
+            <div class="amount-input-group">
+              <span class="amount-currency" id="sim-currency-sym">€</span>
+              <input type="text" inputmode="decimal" id="sim-amount" class="amount-input" placeholder="0.00" required>
+            </div>
+            <span class="form-help">Write freely with comma or dot (e.g. 280 or 114,16).</span>
+          </div>
+
+          <div style="margin-top: 14px;">
+            <button type="submit" id="btn-run-simulation" class="btn btn-primary btn-block">Simulate Impact</button>
+          </div>
+        </form>
+
+        <!-- Simulated Outcome Container -->
+        <div id="sim-outcome-container" style="display: none;">
+          <div class="sim-results">
+            <div class="section-header">
+              <span style="font-weight: 700; font-size: 0.95rem;" id="sim-result-title">Simulation Results</span>
+              <span class="brand-badge">Sandbox Only</span>
+            </div>
+
+            <div class="sim-comparison-grid">
+              <div class="sim-box">
+                <span class="sim-title">Current Situation</span>
+                <div class="sim-metric">
+                  <span>Available:</span>
+                  <span class="sim-metric-val" id="sim-before-avail">€0.00</span>
+                </div>
+                <div class="sim-metric">
+                  <span>Daily Pace:</span>
+                  <span class="sim-metric-val" id="sim-before-pace">€0.00/d</span>
+                </div>
+                <div class="sim-metric">
+                  <span>Savings:</span>
+                  <span class="sim-metric-val" id="sim-before-savings">€0.00</span>
+                </div>
+              </div>
+
+              <div class="sim-box sim-after">
+                <span class="sim-title">After Purchase</span>
+                <div class="sim-metric">
+                  <span>Available:</span>
+                  <span class="sim-metric-val" id="sim-after-avail">€0.00</span>
+                </div>
+                <div class="sim-metric">
+                  <span>Daily Pace:</span>
+                  <span class="sim-metric-val" id="sim-after-pace">€0.00/d</span>
+                </div>
+                <div class="sim-metric">
+                  <span>Savings:</span>
+                  <span class="sim-metric-val" id="sim-after-savings">€0.00</span>
+                </div>
+              </div>
+            </div>
+
+            <div id="sim-status-banner" class="status-banner good">
+              <div class="status-badge" id="sim-status-badge">💡</div>
+              <div id="sim-interpretation" style="font-size: 0.85rem;">
+                <!-- Narrative interpretation generated by Calculations.simulatePurchase -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ======================================================================
+         VIEW 4: MONTHLY STATISTICS & INSIGHTS
+         ====================================================================== -->
+    <main id="view-stats" class="view-section">
+      <section class="card">
+        <h2 class="section-title">Monthly Breakdown</h2>
+        
+        <!-- Category Breakdown -->
+        <div style="margin-top: 8px;">
+          <h3 style="font-size: 0.88rem; font-weight: 700; color: var(--text-muted); margin-bottom: 10px;">SPENDING BY CATEGORY</h3>
+          <div id="stats-category-bars" class="stat-bar-group">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Extraordinary & Emergency Spending Analysis -->
+      <section class="card">
+        <h2 class="section-title">Unexpected Expenses</h2>
+        <p class="form-help">Extraordinary or emergency expenses are not failures—they reflect life events absorbed by your financial buffers.</p>
+
+        <div class="numbers-grid" style="margin-top: 10px;">
+          <div class="metric-box">
+            <span class="metric-box-label">Normal Spending</span>
+            <span id="stat-normal-spent" class="metric-box-val">€0.00</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-box-label">Extraordinary</span>
+            <span id="stat-extra-spent" class="metric-box-val">€0.00</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-box-label">Emergency</span>
+            <span id="stat-emerg-spent" class="metric-box-val">€0.00</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-box-label">Total Spent</span>
+            <span id="stat-total-spent" class="metric-box-val">€0.00</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Leftover vs Planned Savings Explanation -->
+      <section class="card">
+        <h2 class="section-title">Savings vs. Leftover Cash</h2>
+        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.88rem; line-height: 1.5;">
+          <p>
+            FlyPig separates <strong>Planned Savings</strong> (committed upfront) from <strong>Actual Leftover Money</strong> (variable funds unspent at the end of the month):
+          </p>
+          <div class="numbers-grid" style="margin-top: 6px;">
+            <div class="metric-box">
+              <span class="metric-box-label">Planned Savings</span>
+              <span id="stat-planned-savings" class="metric-box-val">€0.00</span>
+            </div>
+            <div class="metric-box">
+              <span class="metric-box-label">Estimated Leftover</span>
+              <span id="stat-estimated-leftover" class="metric-box-val">€0.00</span>
+            </div>
+          </div>
+          <p class="form-help" style="margin-top: 4px;">
+            Leftover money can eventually be allocated to a specific dream, your emergency fund, or rolled over into the next month's cushion.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <!-- ======================================================================
+         VIEW 5: PLAN & SETUP (MONTH CONFIGURATION & SETTINGS)
+         ====================================================================== -->
+    <main id="view-settings" class="view-section">
+      <section class="card">
+        <div class="section-header">
+          <h2 class="section-title">Monthly Configuration</h2>
+          <span id="config-month-name" class="brand-badge">Active Month</span>
+        </div>
+        <p class="form-help">Update your income, recurring obligations, and savings target for this month.</p>
+
+        <form id="month-config-form" onsubmit="return false;" style="display: flex; flex-direction: column; gap: 16px; margin-top: 10px;">
+          
+          <div class="form-group">
+            <label class="form-label" for="cfg-income">Monthly Income</label>
+            <div class="amount-input-group" style="padding: 6px 12px;">
+              <span class="amount-currency cfg-curr-sym" style="font-size: 1.4rem;">€</span>
+              <input type="text" inputmode="decimal" id="cfg-income" class="amount-input" style="font-size: 1.4rem;" placeholder="0.00" required>
+            </div>
+            <span class="form-help">Stipend, part-time wage, family support, or allowance.</span>
+          </div>
+
+          <div class="form-group">
+            <div class="section-header">
+              <label class="form-label">Fixed Recurring Obligations</label>
+              <button type="button" class="btn btn-subtle btn-sm" id="btn-add-fixed-item">+ Add Bill</button>
+            </div>
+            <div id="cfg-fixed-list" style="display: flex; flex-direction: column; gap: 8px;">
+              <!-- Dynamic rows -->
+            </div>
+            <span class="form-help">Rent, health insurance, phone, subscriptions, transport pass.</span>
+          </div>
+
+          <div class="form-group">
+            <div class="section-header">
+              <label class="form-label">Planned Essentials (Expected)</label>
+              <button type="button" class="btn btn-subtle btn-sm" id="btn-add-planned-item">+ Add Item</button>
+            </div>
+            <div id="cfg-planned-list" style="display: flex; flex-direction: column; gap: 8px;">
+              <!-- Dynamic rows -->
+            </div>
+            <span class="form-help">Groceries, household supplies, and essentials.</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="cfg-savings">Planned Savings Goal</label>
+            <div class="amount-input-group" style="padding: 6px 12px;">
+              <span class="amount-currency cfg-curr-sym" style="font-size: 1.4rem;">€</span>
+              <input type="text" inputmode="decimal" id="cfg-savings" class="amount-input" style="font-size: 1.4rem;" placeholder="0.00" required>
+            </div>
+            <span class="form-help">Money you are intentionally protecting before spending on leisure.</span>
+          </div>
+
+          <!-- Dynamic Live Calculated Variable Budget -->
+          <div class="metric-box" style="background: var(--primary-soft); border: 1px solid #bfdbfe;">
+            <span class="metric-box-label" style="color: var(--primary);">Resulting Variable Budget</span>
+            <span id="cfg-preview-variable" class="metric-box-val" style="color: var(--primary); font-size: 1.3rem;">€0.00</span>
+            <span class="form-help" style="color: #1e40af;">(Income − Fixed − Planned − Savings)</span>
+          </div>
+
+          <button type="submit" id="btn-save-month-config" class="btn btn-primary btn-block">Save Configuration</button>
+        </form>
+      </section>
+
+      <!-- App Settings & Backups -->
+      <section class="card">
+        <h2 class="section-title">App Settings & Data</h2>
+        <div class="form-group" style="margin-top: 8px;">
+          <label class="form-label" for="setting-currency">Currency / Moneda</label>
+          <select id="setting-currency" class="form-select">
+            <option value="EUR|€|es-ES">Euro (€ - EUR)</option>
+            <option value="USD|$|en-US">US Dollar ($ - USD)</option>
+            <option value="COP|$|es-CO">Peso Colombiano ($ - COP)</option>
+            <option value="MXN|$|es-MX">Peso Mexicano ($ - MXN)</option>
+            <option value="ARS|$|es-AR">Peso Argentino ($ - ARS)</option>
+            <option value="CLP|$|es-CL">Peso Chileno ($ - CLP)</option>
+            <option value="PEN|S/|es-PE">Sol Peruano (S/ - PEN)</option>
+            <option value="GBP|£|en-GB">British Pound (£ - GBP)</option>
+            <option value="CHF|CHF|de-CH">Swiss Franc (CHF)</option>
+          </select>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap;">
+          <button id="btn-export-data" class="btn btn-secondary btn-sm">Export Data (JSON)</button>
+          <label class="btn btn-secondary btn-sm" style="margin-bottom: 0; cursor: pointer;">
+            Import Backup
+            <input type="file" id="file-import-input" accept=".json" style="display: none;">
+          </label>
+          <button id="btn-reset-data" class="btn btn-danger btn-sm">Reset All Data</button>
+        </div>
+      </section>
+    </main>
+
+  </div><!-- /.app-container -->
+
+  <!-- ======================================================================
+       FLOATING ACTION BUTTON (+ ADD EXPENSE)
+       ====================================================================== -->
+  <div class="fab-container">
+    <button id="btn-open-quick-add" class="btn-fab" aria-label="Add Expense">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+      <span>Expense</span>
+    </button>
+  </div>
+
+  <!-- ======================================================================
+       MODAL 1: QUICK ADD EXPENSE
+       ====================================================================== -->
+  <div id="modal-quick-add" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-quick-add-title">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modal-quick-add-title" class="modal-title">Log Expense</h2>
+        <button class="btn-close" id="btn-close-quick-add" aria-label="Close">&times;</button>
+      </div>
+
+      <form id="form-quick-add" onsubmit="return false;">
+        <!-- Large Numeric Amount Input -->
+        <div class="form-group">
+          <label class="form-label" for="add-amount">Amount</label>
+          <div class="amount-input-group">
+            <span class="amount-currency" id="modal-add-currency">€</span>
+            <input type="text" inputmode="decimal" id="add-amount" class="amount-input" placeholder="0.00" required autofocus>
+          </div>
+          <span class="form-help">Write freely with comma or dot (e.g. 114,16 or 114.16).</span>
+        </div>
+
+        <!-- Fast Category Chips -->
+        <div class="form-group" style="margin-top: 10px;">
+          <label class="form-label">Category</label>
+          <div id="add-category-chips" class="chips-grid">
+            <!-- Populated by JS -->
+          </div>
+          <input type="hidden" id="add-selected-category" value="Food / Groceries" required>
+          <div id="add-bucket-hint" style="font-size: 0.8rem; font-weight: 600; color: #0284c7; margin-top: 6px; padding: 4px 6px; background: #f0f9ff; border-radius: 6px; display: inline-block;"></div>
+        </div>
+
+        <!-- Store / Place (Future Price Intelligence ready) -->
+        <div class="form-group" style="margin-top: 10px;">
+          <label class="form-label" for="add-store">Store / Place <span class="form-help">(e.g. REWE, Penny, Lidl)</span></label>
+          <input type="text" id="add-store" class="form-input" list="store-suggestions" placeholder="Where did you spend?">
+          <datalist id="store-suggestions">
+            <!-- Populated by JS Store.getUniqueStores() -->
+          </datalist>
+        </div>
+
+        <!-- Expense Type (Normal / Extraordinary / Emergency) -->
+        <div class="form-group" style="margin-top: 10px;">
+          <label class="form-label">Expense Type</label>
+          <div class="segmented-control" id="add-type-segmented">
+            <button type="button" class="segment-btn active" data-type="normal">Normal</button>
+            <button type="button" class="segment-btn" data-type="extraordinary">Extraordinary</button>
+            <button type="button" class="segment-btn" data-type="emergency">Emergency</button>
+          </div>
+          <input type="hidden" id="add-selected-type" value="normal">
+          <span class="form-help" id="add-type-help">Regular everyday spending.</span>
+        </div>
+
+        <!-- Expandable Details (Date, Description, Payment Method) -->
+        <details style="margin-top: 10px;">
+          <summary style="font-size: 0.82rem; font-weight: 600; color: var(--text-muted); cursor: pointer; padding: 4px 0;">
+            + More details (Date, Description, Payment)
+          </summary>
+          <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+            <div class="form-group">
+              <label class="form-label" for="add-date">Date</label>
+              <input type="date" id="add-date" class="form-input">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="add-description">Description / Note</label>
+              <input type="text" id="add-description" class="form-input" placeholder="e.g. Groceries for dinner, Movie ticket">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="add-payment-method">Payment Method</label>
+              <select id="add-payment-method" class="form-select">
+                <option value="Card">Card</option>
+                <option value="Cash">Cash</option>
+                <option value="Bank Transfer">Bank Transfer</option>
+                <option value="PayPal">PayPal / App</option>
+              </select>
+            </div>
+          </div>
+        </details>
+
+        <div style="margin-top: 18px;">
+          <button type="submit" id="btn-save-expense" class="btn btn-primary btn-block" style="padding: 14px;">Save Expense</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       MODAL 2: EDIT EXPENSE
+       ====================================================================== -->
+  <div id="modal-edit-expense" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-edit-title">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modal-edit-title" class="modal-title">Edit Expense</h2>
+        <button class="btn-close" id="btn-close-edit-expense" aria-label="Close">&times;</button>
+      </div>
+
+      <form id="form-edit-expense" onsubmit="return false;">
+        <input type="hidden" id="edit-expense-id">
+        <div class="form-group">
+          <label class="form-label" for="edit-amount">Amount</label>
+          <div class="amount-input-group">
+            <span class="amount-currency" id="modal-edit-currency">€</span>
+            <input type="text" inputmode="decimal" id="edit-amount" class="amount-input" required>
+          </div>
+          <span class="form-help">Write freely with comma or dot (e.g. 114,16 or 114.16).</span>
+        </div>
+
+        <div class="form-group" style="margin-top: 10px;">
+          <label class="form-label" for="edit-category">Category</label>
+          <select id="edit-category" class="form-select"></select>
+        </div>
+
+        <div class="form-group" style="margin-top: 10px;">
+          <label class="form-label" for="edit-store">Store / Place</label>
+          <input type="text" id="edit-store" class="form-input" list="store-suggestions">
+        </div>
+
+        <div class="form-group" style="margin-top: 10px;">
+          <label class="form-label" for="edit-type">Expense Type</label>
+          <select id="edit-type" class="form-select">
+            <option value="normal">Normal</option>
+            <option value="extraordinary">Extraordinary</option>
+            <option value="emergency">Emergency</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-top: 10px;">
+          <label class="form-label" for="edit-date">Date</label>
+          <input type="date" id="edit-date" class="form-input" required>
+        </div>
+
+        <div class="form-group" style="margin-top: 10px;">
+          <label class="form-label" for="edit-description">Description</label>
+          <input type="text" id="edit-description" class="form-input">
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 18px;">
+          <button type="button" id="btn-delete-expense" class="btn btn-danger" style="flex: 1;">Delete</button>
+          <button type="submit" id="btn-update-expense" class="btn btn-primary" style="flex: 2;">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       MODAL 3: START NEW MONTH (OR COPY PREVIOUS)
+       ====================================================================== -->
+  <div id="modal-new-month" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-new-month-title">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modal-new-month-title" class="modal-title">Start a New Month</h2>
+        <button class="btn-close" id="btn-close-new-month" aria-label="Close">&times;</button>
+      </div>
+
+      <form id="form-new-month" onsubmit="return false;">
+        <div class="form-group">
+          <label class="form-label" for="new-month-select-date">Select Month</label>
+          <input type="month" id="new-month-select-date" class="form-input" required>
+        </div>
+
+        <div id="new-month-copy-box" style="margin-top: 12px; background: var(--bg-subtle); padding: 12px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between;">
+          <div>
+            <div style="font-weight: 700; font-size: 0.88rem;">Copy previous month?</div>
+            <div class="form-help">Copies income, fixed bills, and planned savings.</div>
+          </div>
+          <button type="button" id="btn-copy-prev-month" class="btn btn-secondary btn-sm">Copy Setup</button>
+        </div>
+
+        <div style="margin-top: 14px;">
+          <button type="submit" id="btn-confirm-new-month" class="btn btn-primary btn-block">Create Month</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       MODAL 4: WELCOME ONBOARDING WIZARD
+       ====================================================================== -->
+  <div id="modal-onboarding" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-onboard-title">
+    <div class="modal-content" style="max-width: 580px;">
+      <div class="modal-header">
+        <div>
+          <h2 id="modal-onboard-title" class="modal-title">Welcome to FlyPig 🐷✨</h2>
+          <p class="form-help">Let's set up your monthly finances in 4 simple steps.</p>
+        </div>
+      </div>
+
+      <!-- Step indicator -->
+      <div class="wizard-steps">
+        <div class="wizard-step-bullet active" id="wiz-bullet-1">1</div>
+        <div class="wizard-step-bullet" id="wiz-bullet-2">2</div>
+        <div class="wizard-step-bullet" id="wiz-bullet-3">3</div>
+        <div class="wizard-step-bullet" id="wiz-bullet-4">4</div>
+      </div>
+
+      <!-- STEP 1: CURRENCY & INCOME -->
+      <div id="wizard-step-1" class="wizard-step-panel">
+        <h3 style="font-size: 1.05rem; font-weight: 700;">Step 1: Currency & Monthly Income</h3>
+        <p class="form-help" style="margin-bottom: 12px;">Choose your primary currency and estimated monthly income.</p>
+
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label class="form-label" for="onboard-currency-select">Primary Currency / Moneda</label>
+          <select id="onboard-currency-select" class="form-select" style="font-weight: 600; font-size: 0.95rem;">
+            <option value="EUR|€|es-ES">Euro (€ - EUR)</option>
+            <option value="USD|$|en-US">US Dollar ($ - USD)</option>
+            <option value="COP|$|es-CO">Peso Colombiano ($ - COP)</option>
+            <option value="MXN|$|es-MX">Peso Mexicano ($ - MXN)</option>
+            <option value="ARS|$|es-AR">Peso Argentino ($ - ARS)</option>
+            <option value="CLP|$|es-CL">Peso Chileno ($ - CLP)</option>
+            <option value="PEN|S/|es-PE">Sol Peruano (S/ - PEN)</option>
+            <option value="GBP|£|en-GB">British Pound (£ - GBP)</option>
+            <option value="CHF|CHF|de-CH">Swiss Franc (CHF)</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="onboard-income">Monthly Income</label>
+          <div class="amount-input-group">
+            <span class="amount-currency onboard-curr-symbol">€</span>
+            <input type="text" inputmode="decimal" id="onboard-income" class="amount-input" placeholder="0.00" value="992">
+          </div>
+          <span class="form-help">Write freely with comma or dot (e.g. 114,16 or 114.16).</span>
+        </div>
+
+        <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
+          <button type="button" class="btn btn-primary" id="btn-wiz-next-1">Next: Fixed Obligations &rarr;</button>
+        </div>
+      </div>
+
+      <!-- STEP 2: FIXED BILLS -->
+      <div id="wizard-step-2" class="wizard-step-panel" style="display: none;">
+        <div class="section-header">
+          <h3 style="font-size: 1.05rem; font-weight: 700;">Step 2: Fixed Obligations</h3>
+          <button type="button" class="btn btn-subtle btn-sm" id="btn-onboard-add-fixed">+ Add Bill</button>
+        </div>
+        <p class="form-help" style="margin-bottom: 12px;">Rent, health insurance, phone, subscriptions.</p>
+
+        <div id="onboard-fixed-list" style="display: flex; flex-direction: column; gap: 8px; max-height: 200px; overflow-y: auto;">
+          <!-- Default suggested items -->
+        </div>
+
+        <div style="margin-top: 20px; display: flex; justify-content: space-between;">
+          <button type="button" class="btn btn-secondary" id="btn-wiz-prev-2">&larr; Back</button>
+          <button type="button" class="btn btn-primary" id="btn-wiz-next-2">Next: Essentials &rarr;</button>
+        </div>
+      </div>
+
+      <!-- STEP 3: PLANNED ESSENTIALS -->
+      <div id="wizard-step-3" class="wizard-step-panel" style="display: none;">
+        <div class="section-header">
+          <h3 style="font-size: 1.05rem; font-weight: 700;">Step 3: Planned Essentials</h3>
+          <button type="button" class="btn btn-subtle btn-sm" id="btn-onboard-add-planned">+ Add Item</button>
+        </div>
+        <p class="form-help" style="margin-bottom: 12px;">Estimated money for groceries, household basics, and transit.</p>
+
+        <div id="onboard-planned-list" style="display: flex; flex-direction: column; gap: 8px; max-height: 200px; overflow-y: auto;">
+          <!-- Default items -->
+        </div>
+
+        <div style="margin-top: 20px; display: flex; justify-content: space-between;">
+          <button type="button" class="btn btn-secondary" id="btn-wiz-prev-3">&larr; Back</button>
+          <button type="button" class="btn btn-primary" id="btn-wiz-next-3">Next: Savings &rarr;</button>
+        </div>
+      </div>
+
+      <!-- STEP 4: PLANNED SAVINGS & CONFIRMATION -->
+      <div id="wizard-step-4" class="wizard-step-panel" style="display: none;">
+        <h3 style="font-size: 1.05rem; font-weight: 700;">Step 4: Planned Savings</h3>
+        <p class="form-help" style="margin-bottom: 12px;">How much do you intentionally want to put aside this month?</p>
+
+        <div class="form-group">
+          <div class="amount-input-group">
+            <span class="amount-currency onboard-curr-symbol">€</span>
+            <input type="text" inputmode="decimal" id="onboard-savings" class="amount-input" placeholder="0.00" value="150">
+          </div>
+        </div>
+
+        <!-- Live Variable Calculation Preview -->
+        <div class="metric-box" style="margin-top: 14px; background: var(--success-soft); border: 1px solid var(--success-border);">
+          <span class="metric-box-label" style="color: var(--success-text);">Your Available Variable Spending Budget</span>
+          <span id="onboard-preview-variable" class="metric-box-val" style="color: var(--success-text); font-size: 1.4rem;">€0.00</span>
+          <span class="form-help" style="color: var(--success-text);">This is what you can spend freely on eating out, leisure, and shopping!</span>
+        </div>
+
+        <div style="margin-top: 20px; display: flex; justify-content: space-between;">
+          <button type="button" class="btn btn-secondary" id="btn-wiz-prev-4">&larr; Back</button>
+          <button type="button" class="btn btn-primary" id="btn-finish-onboarding">Finish Setup &amp; Start &rarr;</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- JavaScript Scripts (Standard tags for 100% direct file:// and http:// browser compatibility) -->
+  <script src="js/calculations.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
